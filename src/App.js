@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { lazy, Suspense } from 'react';
+// import ComponentA from './Containers/ComponentA';
+// import ComponentB from './Containers/ComponentB';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+// import Home from './Containers/Home';
+// import About from './Containers/About';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// import AsyncComponent from './Hoc/AsncronousComponents';
+
+// const AsyncHome = AsyncComponent(()=>import('./Containers/Home'));
+// const AsyncAbout = AsyncComponent(()=>import('./Containers/About'));
+
+const AsyncHome = lazy(() => import('./Containers/Home'));
+const AsyncAbout = lazy(() => import('./Containers/About'));
+
+export default class App extends React.Component {
+  render() {
+    return (
+      // <div style={{ textAlign: 'center' }}>
+      //   <h1>App</h1>
+      //   <ComponentA name="Jhon" />
+      //   <ComponentB name="Doe" />
+      // </div>
+      <BrowserRouter>
+        <Switch>
+          <Suspense fallback={<h1>Loding...</h1>}>
+            <Route exact path="/" component={AsyncHome} />
+            <Route path="/about" component={AsyncAbout} />
+          </Suspense>
+        </Switch>
+      </BrowserRouter>
+    )
+  }
 }
-
-export default App;
